@@ -1,6 +1,9 @@
 package hmap
 
-import "testing"
+import (
+  "math/rand"
+  "testing"
+)
 
 type intKey int
 
@@ -8,7 +11,7 @@ func (key intKey) Hash() int {
   return int(key)
 }
 
-func TestMap(t *testing.T) {
+func TestMapStorage(t *testing.T) {
   m := Map{}
   m.Init(4)
 
@@ -20,5 +23,32 @@ func TestMap(t *testing.T) {
   _, val := m.Get(&k1)
   if *val != a {
     t.Errorf("Expected to get %d from map at k1, got %d", a, *val)
+  }
+}
+
+func TestMapResize(t *testing.T) {
+  m := Map{}
+  m.Init(100)
+
+  s := make([]Value, 1000)
+
+  for i := range s {
+    k := Key(intKey(i))
+    a := interface{}(rand.Int())
+    v1 := &a
+    m.Put(&k, v1)
+    s[i] = Value{Key: &k, Val: v1}
+  }
+
+  for i, v := range s {
+    k := Key(intKey(i))
+    found, val := m.Get(&k)
+    if !found {
+      t.Errorf("Expected to find value at key %d", (*v.Key).Hash())
+      continue
+    }
+    if *val != *v.Val {
+      t.Errorf("Expected to get %d from map at key %d, got %d", *v.Val, (*v.Key).Hash(), *val)
+    }
   }
 }
