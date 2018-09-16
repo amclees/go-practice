@@ -41,13 +41,17 @@ func (m *Map) Put(k *Key, d *interface{}) bool {
 
   nss := make([]Value, newSize(ss))
   copy(nss, ss)
+  nss[len(ss)] = v
   m.s[ssi] = nss
   return true
 }
 
 func (m *Map) Get(k *Key) (bool, *interface{}) {
   for _, sv := range m.s[m.compress((*k).Hash())] {
-    if sv.Key == k {
+    if sv.Key == nil {
+      continue
+    }
+    if (*sv.Key).Hash() == (*k).Hash() {
       return true, sv.Val
     }
   }
