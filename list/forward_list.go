@@ -1,16 +1,16 @@
 package list
 
 type ForwardList struct {
-  first *Node
+  first *ForwardNode
   length int
 }
 
-type Node struct {
-  next *Node
+type ForwardNode struct {
+  next *ForwardNode
   val int64
 }
 
-func (list *ForwardList) last() *Node {
+func (list *ForwardList) last() *ForwardNode {
   current := list.first
   for ; current.next != nil; current = current.next {}
   return current
@@ -18,7 +18,7 @@ func (list *ForwardList) last() *Node {
 
 func (list *ForwardList) Append(value int64) {
   list.length += 1
-  node := Node{val: value}
+  node := ForwardNode{val: value}
   if list.first == nil {
     list.first = &node
     return
@@ -28,7 +28,7 @@ func (list *ForwardList) Append(value int64) {
 
 func (list *ForwardList) Prepend(value int64) {
   list.length += 1
-  node := Node{val: value, next: list.first}
+  node := ForwardNode{val: value, next: list.first}
   list.first = &node
 }
 
