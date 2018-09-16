@@ -52,3 +52,28 @@ func TestMapResize(t *testing.T) {
     }
   }
 }
+
+func TestMapRemove(t *testing.T) {
+  m := Map{}
+  m.Init(4)
+
+  k1 := Key(intKey(25))
+  a := interface{}(1)
+  v1 := &a
+  m.Put(&k1, v1)
+
+  found, _ := m.Get(&k1)
+  if !found {
+    t.Errorf("Expected to find value before deletion")
+  }
+
+  removed := m.Remove(&k1)
+  if !removed {
+    t.Errorf("Expected removal to succeed")
+  }
+
+  foundAfterRemove, _ := m.Get(&k1)
+  if foundAfterRemove {
+    t.Errorf("Expected not to find value after deletion")
+  }
+}

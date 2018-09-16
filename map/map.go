@@ -58,6 +58,20 @@ func (m *Map) Get(k *Key) (bool, *interface{}) {
   return false, nil
 }
 
+func (m *Map) Remove(k *Key) bool {
+  ss := m.s[m.compress((*k).Hash())]
+  for i, sv := range ss {
+    if sv.Key == nil {
+      continue
+    }
+    if (*sv.Key).Hash() == (*k).Hash() {
+      ss[i] = Value{}
+      return true
+    }
+  }
+  return false
+}
+
 func (m *Map) compress(hashcode int) int {
   return hashcode % len(m.s)
 }
