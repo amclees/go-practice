@@ -1,6 +1,9 @@
 package sort
 
-import "testing"
+import (
+	"math/rand"
+	"testing"
+)
 
 func TestMergeSort(t *testing.T) {
 	a := []int64{6, 2, 5, 2, 4, 3}
@@ -16,4 +19,15 @@ func TestMergeSort(t *testing.T) {
 	if fail {
 		t.Errorf("Expected a to be %v, got %v", b, a)
 	}
+}
+
+func BenchmarkMergeSort(b *testing.B) {
+	s := make([]int64, b.N)
+	for i := range s {
+		s[i] = rand.Int63()
+	}
+
+	b.ResetTimer()
+
+	MergeSort(s)
 }
