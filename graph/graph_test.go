@@ -86,3 +86,8 @@ func TestListGraph(t *testing.T) {
 	graph := NewListGraph(0, 0)
 	testGraph(t, Graph(&graph))
 }
+
+func TestMatrixGraph(t *testing.T) {
+	graph := NewMatrixGraph(0)
+	testGraph(t, Graph(&graph))
+}
