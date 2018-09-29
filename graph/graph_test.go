@@ -81,3 +81,8 @@ func TestPointerGraph(t *testing.T) {
 	graph := PointerGraph{}
 	testGraph(t, Graph(&graph))
 }
+
+func TestListGraph(t *testing.T) {
+	graph := NewListGraph(0, 0)
+	testGraph(t, Graph(&graph))
+}
