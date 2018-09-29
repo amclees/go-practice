@@ -10,7 +10,7 @@ func TestPriorityQueue(t *testing.T) {
 	q.Enqueue(6, 5)
 	q.Enqueue(3, 4)
 
-	expected := []int64{5, 10, 4}
+	expected := []int{5, 10, 4}
 	for i := range expected {
 		d := q.Dequeue()
 		if d != expected[i] {

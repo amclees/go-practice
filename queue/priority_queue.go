@@ -21,15 +21,15 @@ func (q *PriorityQueue) Init(cap int) {
 	q.h.Init(cap)
 }
 
-func (q *PriorityQueue) Enqueue(p int64, d int64) {
+func (q *PriorityQueue) Enqueue(p int, d interface{}) {
 	k := hmap.Key(intKey(p))
-	w := interface{}(d)
+	w := d
 	q.m.Put(&k, &w)
 	q.h.Add(p)
 }
 
-func (q *PriorityQueue) Dequeue() int64 {
+func (q *PriorityQueue) Dequeue() interface{} {
 	k := hmap.Key(intKey(q.h.Extract()))
 	_, val := q.m.Get(&k)
-	return (*val).(int64)
+	return (*val).(interface{})
 }
