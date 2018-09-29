@@ -1,14 +1,14 @@
 package heap
 
 type MinHeap struct {
-	s []int64
+	s []int
 }
 
 func (m *MinHeap) Init(cap int) {
-	m.s = make([]int64, 0, cap)
+	m.s = make([]int, 0, cap)
 }
 
-func (m *MinHeap) Add(d int64) {
+func (m *MinHeap) Add(d int) {
 	i := len(m.s)
 	m.s = append(m.s, d)
 	s := m.s
@@ -27,7 +27,7 @@ func (m *MinHeap) Add(d int64) {
 	}
 }
 
-func (m *MinHeap) Extract() int64 {
+func (m *MinHeap) Extract() int {
 	s := m.s
 	d := s[0]
 	s[0] = s[len(s)-1]

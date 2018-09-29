@@ -1,14 +1,14 @@
 package heap
 
 type MaxHeap struct {
-	s []int64
+	s []int
 }
 
 func (m *MaxHeap) Init(cap int) {
-	m.s = make([]int64, 0, cap)
+	m.s = make([]int, 0, cap)
 }
 
-func (m *MaxHeap) Add(d int64) {
+func (m *MaxHeap) Add(d int) {
 	i := len(m.s)
 	m.s = append(m.s, d)
 	s := m.s
@@ -27,7 +27,7 @@ func (m *MaxHeap) Add(d int64) {
 	}
 }
 
-func (m *MaxHeap) Extract() int64 {
+func (m *MaxHeap) Extract() int {
 	s := m.s
 	d := s[0]
 	s[0] = s[len(s)-1]
