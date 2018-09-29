@@ -8,16 +8,16 @@ type PointerGraph struct {
 }
 
 type Node struct {
-	id int64
+	id int
 	val interface{}
 }
 
 type Edge struct {
-	src, dst int64
-	w int64
+	src, dst int
+	w int
 }
 
-func (g *PointerGraph) AddNode(id int64, val interface{}) {
+func (g *PointerGraph) AddNode(id int, val interface{}) {
 	if g.nn > 0 {
 		for i, node := range g.nodes {
 			if node.id == 0 {
@@ -30,7 +30,7 @@ func (g *PointerGraph) AddNode(id int64, val interface{}) {
 	}
 }
 
-func (g *PointerGraph) AddEdge(src, dst, w int64) {
+func (g *PointerGraph) AddEdge(src, dst, w int) {
 	if g.ne > 0 {
 		for i, edge := range g.edges {
 			if edge.src == 0 && edge.dst == 0 {
@@ -43,7 +43,7 @@ func (g *PointerGraph) AddEdge(src, dst, w int64) {
 	}
 }
 
-func (g *PointerGraph) Node(id int64) (bool, interface{}) {
+func (g *PointerGraph) Node(id int) (bool, interface{}) {
 	for _, node := range g.nodes {
 		if node.id == id {
 			return true, node.val
@@ -52,7 +52,7 @@ func (g *PointerGraph) Node(id int64) (bool, interface{}) {
 	return false, nil
 }
 
-func (g *PointerGraph) Edge(src, dst int64) (bool, int64) {
+func (g *PointerGraph) Edge(src, dst int) (bool, int) {
 	for _, edge := range g.edges {
 		if edge.src == src && edge.dst == dst {
 			return true, edge.w
@@ -61,7 +61,7 @@ func (g *PointerGraph) Edge(src, dst int64) (bool, int64) {
 	return false, 0
 }
 
-func (g *PointerGraph) RemoveNode(id int64) bool {
+func (g *PointerGraph) RemoveNode(id int) bool {
 	for _, node := range g.nodes {
 		if node.id == id {
 			node.id = 0
@@ -73,7 +73,7 @@ func (g *PointerGraph) RemoveNode(id int64) bool {
 	return false
 }
 
-func (g *PointerGraph) RemoveEdge(src, dst int64) bool {
+func (g *PointerGraph) RemoveEdge(src, dst int) bool {
 	for i, edge := range g.edges {
 		if edge.src == src && edge.dst == dst {
 			g.edges[i].src = 0
@@ -86,19 +86,19 @@ func (g *PointerGraph) RemoveEdge(src, dst int64) bool {
 	return false
 }
 
-func (g *PointerGraph) Nodes() []int64 {
-	n := make([]int64, len(g.nodes))
+func (g *PointerGraph) Nodes() []int {
+	n := make([]int, len(g.nodes))
 	for i := range n {
 		n[i] = g.nodes[i].id
 	}
 	return n
 }
 
-func (g *PointerGraph) Edges(id int64) [][2]int64 {
-	n := make([][2]int64, 0)
+func (g *PointerGraph) Edges(id int) [][2]int {
+	n := make([][2]int, 0)
 	for _, edge := range g.edges {
 		if edge.src == id {
-			n = append(n, [2]int64{edge.dst, edge.w})
+			n = append(n, [2]int{edge.dst, edge.w})
 		}
 	}
 	return n

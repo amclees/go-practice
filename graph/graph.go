@@ -1,17 +1,17 @@
 package graph
 
 type Graph interface {
-	AddNode(id int64, val interface{})
-	AddEdge(src, dst, w int64)
+	AddNode(id int, val interface{})
+	AddEdge(src, dst, w int)
 
-	Node(id int64) (bool, interface{})
-	Edge(src, dst int64) (bool, int64)
+	Node(id int) (bool, interface{})
+	Edge(src, dst int) (bool, int)
 
-	RemoveNode(id int64) bool
-	RemoveEdge(src, dst int64) bool
+	RemoveNode(id int) bool
+	RemoveEdge(src, dst int) bool
 
-	Nodes() []int64
-	Edges(id int64) [][2]int64
+	Nodes() []int
+	Edges(id int) [][2]int
 	EdgeCount() int
 	NodeCount() int
 }
