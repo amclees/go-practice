@@ -1,12 +1,12 @@
 package graph
 
 type ListGraph struct {
-	nodes []List
+	nodes  []List
 	ec, nc int
 }
 
 type List struct {
-	val interface{}
+	val  interface{}
 	list [][2]int
 }
 
@@ -23,7 +23,7 @@ func NewListGraph(nodeHint, edgeHint int) ListGraph {
 func (g *ListGraph) AddNode(id int, val interface{}) {
 	if id >= len(g.nodes) {
 		k := id - len(g.nodes)
-		for i := 0; i < k + 2; i++ {
+		for i := 0; i < k+2; i++ {
 			g.nodes = append(g.nodes, List{list: make([][2]int, 0)})
 		}
 	}
@@ -50,7 +50,7 @@ func (g *ListGraph) AddEdge(src, dst, w int) {
 	g.ec += 1
 }
 
-func (g  ListGraph) Node(id int) (bool, interface{}) {
+func (g ListGraph) Node(id int) (bool, interface{}) {
 	if id >= len(g.nodes) || g.nodes[id].val == interface{}(nil) {
 		return false, interface{}(nil)
 	}

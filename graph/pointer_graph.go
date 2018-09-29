@@ -1,20 +1,20 @@
 package graph
 
 type PointerGraph struct {
-	nodes []Node
-	edges []Edge
+	nodes  []Node
+	edges  []Edge
 	ne, nn int
-	size int
+	size   int
 }
 
 type Node struct {
-	id int
+	id  int
 	val interface{}
 }
 
 type Edge struct {
 	src, dst int
-	w int
+	w        int
 }
 
 func (g *PointerGraph) AddNode(id int, val interface{}) {
