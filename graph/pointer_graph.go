@@ -74,11 +74,11 @@ func (g *PointerGraph) RemoveNode(id int64) bool {
 }
 
 func (g *PointerGraph) RemoveEdge(src, dst int64) bool {
-	for _, edge := range g.edges {
+	for i, edge := range g.edges {
 		if edge.src == src && edge.dst == dst {
-			edge.src = 0
-			edge.dst = 0
-			edge.w = 0
+			g.edges[i].src = 0
+			g.edges[i].dst = 0
+			g.edges[i].w = 0
 			g.ne += 1
 			return true
 		}
@@ -95,7 +95,7 @@ func (g *PointerGraph) Nodes() []int64 {
 }
 
 func (g *PointerGraph) Edges(id int64) [][2]int64 {
-	n := make([][2]int64, 1)
+	n := make([][2]int64, 0)
 	for _, edge := range g.edges {
 		if edge.src == id {
 			n = append(n, [2]int64{edge.dst, edge.w})
