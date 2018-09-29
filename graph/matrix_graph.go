@@ -2,7 +2,7 @@ package graph
 
 type MatrixGraph struct {
 	matrix [][]int
-	nodes []interface{}
+	nodes  []interface{}
 	nc, ec int
 }
 
@@ -22,7 +22,7 @@ func NewMatrixGraph(nodeHint int) MatrixGraph {
 
 func (g *MatrixGraph) AddNode(id int, val interface{}) {
 	if id >= len(g.nodes) {
-		for i := 0; i < len(g.nodes) - id; i++ {
+		for i := 0; i < len(g.nodes)-id; i++ {
 			g.nodes = append(g.nodes, interface{}(nil))
 		}
 		g.nodes = append(g.nodes, val)
