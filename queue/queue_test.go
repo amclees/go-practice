@@ -14,7 +14,7 @@ func TestQueue(t *testing.T) {
 	q.Enqueue(2)
 	q.Enqueue(3)
 
-	expected := []int64{1, 2, 3}
+	expected := []int{1, 2, 3}
 	for i := range expected {
 		found, _ := q.Dequeue()
 		if found != expected[i] {

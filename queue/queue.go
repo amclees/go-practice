@@ -7,11 +7,11 @@ type Queue struct {
 }
 
 type Node struct {
-	val  int64
+	val  int
 	next *Node
 }
 
-func (q *Queue) Enqueue(d int64) {
+func (q *Queue) Enqueue(d int) {
 	q.size += 1
 
 	n := Node{val: d}
@@ -25,7 +25,7 @@ func (q *Queue) Enqueue(d int64) {
 	q.end = &n
 }
 
-func (q *Queue) Dequeue() (int64, bool) {
+func (q *Queue) Dequeue() (int, bool) {
 	if q.size == 0 {
 		return 0, false
 	} else if q.size == 1 {
