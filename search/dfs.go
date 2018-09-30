@@ -1,23 +1,19 @@
 package search
 
-import (
-	"github.com/amclees/go-practice/graph"
-	"github.com/amclees/go-practice/queue"
-)
+import "github.com/amclees/go-practice/graph"
 
-func BFS(g graph.Graph, start, end int) []int {
-	q := queue.Queue{}
-	q.Enqueue(start)
+func DFS(g graph.Graph, start, end int) []int {
+	st := []int{start}
 
-	prev := make(map[int]int)
-	for n, ok := q.Dequeue(); ok; n, ok = q.Dequeue() {
+	prev := make(map[int]int, g.NodeCount())
+	for n := st[0]; len(st) != 0; n, st = st[0], st[:len(st)-1] {
 		for _, edge := range g.Edges(n) {
-			_, ok = prev[edge[0]]
+			_, ok := prev[edge[0]]
 			if ok {
 				continue
 			}
 			prev[edge[0]] = n
-			q.Enqueue(edge[0])
+			st = append(st, edge[0])
 		}
 	}
 

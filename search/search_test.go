@@ -13,17 +13,21 @@ type testCase struct {
 
 func TestBFS(t *testing.T) {
 	// BFS does not consider weights and will not necessarily produce minimum paths
-	testSearch(t, BFS, false)
+	testSearch("BFS", t, BFS, false)
 }
 
-func testSearch(t *testing.T, search func(graph.Graph, int, int) []int, testMin bool) {
+func TestDFS(t *testing.T) {
+	testSearch("DFS", t, DFS, false)
+}
+
+func testSearch(name string, t *testing.T, search func(graph.Graph, int, int) []int, testMin bool) {
 	for i, c := range createCases() {
 		p := search(c.g, c.start, c.end)
 		if !verifyPath(c.g, p, c.start, c.end) {
-			t.Errorf("Case %d: Expected valid path, got %v", i, p)
+			t.Errorf("Case %d (%v): Expected valid path, got %v", i, name, p)
 		}
 		if testMin && len(p) != c.minLen {
-			t.Errorf("Case %d: Expected path length %d, got %d", i, c.minLen, len(p))
+			t.Errorf("Case %d (%v): Expected path length %d, got %d", i, name, c.minLen, len(p))
 		}
 	}
 }
