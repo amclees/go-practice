@@ -62,3 +62,8 @@ func TestBST(t *testing.T) {
 	tr := &BST{}
 	testSearchTree(&wrappedTest{t, "BST", Tree(tr)}, searchTree(tr))
 }
+
+func TestAVL(t *testing.T) {
+	tr := &AVL{h: -1}
+	testSearchTree(&wrappedTest{t, "AVL", tr}, tr)
+}
