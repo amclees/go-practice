@@ -6,10 +6,9 @@ func DFS(g graph.Graph, start, end int) []int {
 	st := []int{start}
 
 	prev := make(map[int]int, g.NodeCount())
-	for n := st[0]; len(st) != 0; n, st = st[0], st[:len(st)-1] {
+	for n := st[0]; len(st) != 0; n, st = st[len(st)-1], st[:len(st)-1] {
 		for _, edge := range g.Edges(n) {
-			_, ok := prev[edge[0]]
-			if ok {
+			if _, ok := prev[edge[0]]; ok {
 				continue
 			}
 			prev[edge[0]] = n
