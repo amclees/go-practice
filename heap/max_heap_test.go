@@ -2,18 +2,28 @@ package heap
 
 import "testing"
 
+type intVal int
+
+func (i intVal) Key() int {
+	return int(i)
+}
+
+func (i intVal) Val() interface{} {
+	return int(i)
+}
+
 func TestMaxHeap(t *testing.T) {
 	m := MaxHeap{}
 
-	m.Add(5)
-	m.Add(3)
-	m.Add(10)
-	m.Add(7)
-	m.Add(6)
+	m.Add(intVal(5))
+	m.Add(intVal(3))
+	m.Add(intVal(10))
+	m.Add(intVal(7))
+	m.Add(intVal(6))
 
 	s := make([]int, 5)
 	for i := range s {
-		s[i] = m.Extract()
+		s[i] = m.Extract().Key()
 	}
 
 	b := []int{10, 7, 6, 5, 3}
