@@ -20,6 +20,10 @@ func TestDFS(t *testing.T) {
 	testSearch("DFS", t, DFS, false)
 }
 
+func TestDijkstra(t *testing.T) {
+	testSearch("Dijkstra", t, Dijkstra, true)
+}
+
 func testSearch(name string, t *testing.T, search func(graph.Graph, int, int) []int, testMin bool) {
 	for i, c := range createCases() {
 		p := search(c.g, c.start, c.end)
