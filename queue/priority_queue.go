@@ -1,35 +1,32 @@
 package queue
 
-import (
-	"github.com/amclees/go-practice/heap"
-	"github.com/amclees/go-practice/hmap"
-)
+import "github.com/amclees/go-practice/heap"
 
 type PriorityQueue struct {
-	m hmap.Map
 	h heap.MaxHeap
 }
 
-type intKey int
+type pair struct {
+	key int
+	val interface{}
+}
 
-func (key intKey) Hash() int {
-	return int(key)
+func (p pair) Key() int {
+	return p.key
+}
+
+func (p pair) Val() interface{} {
+	return p.val
 }
 
 func (q *PriorityQueue) Init(cap int) {
-	q.m.Init(cap)
 	q.h.Init(cap)
 }
 
 func (q *PriorityQueue) Enqueue(p int, d interface{}) {
-	k := hmap.Key(intKey(p))
-	w := d
-	q.m.Put(&k, &w)
-	q.h.Add(p)
+	q.h.Add(pair{p, d})
 }
 
 func (q *PriorityQueue) Dequeue() interface{} {
-	k := hmap.Key(intKey(q.h.Extract()))
-	_, val := q.m.Get(&k)
-	return (*val).(interface{})
+	return q.h.Extract().Val()
 }
