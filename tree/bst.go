@@ -1,8 +1,8 @@
 package tree
 
 type BST struct {
-	key int
-	val interface{}
+	key         int
+	val         interface{}
 	left, right *BST
 }
 
@@ -20,11 +20,11 @@ func (t *BST) Key() int {
 
 func (t *BST) Children() []Node {
 	l := Node(nil)
-	if (t.left != nil) {
+	if t.left != nil {
 		l = Node(t.left)
 	}
 	r := Node(nil)
-	if (t.right != nil) {
+	if t.right != nil {
 		r = Node(t.right)
 	}
 	return []Node{l, r}

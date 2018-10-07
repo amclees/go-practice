@@ -1,8 +1,8 @@
 package tree
 
 type BinaryTree struct {
-	key int
-	left *BinaryTree
+	key   int
+	left  *BinaryTree
 	right *BinaryTree
 }
 
@@ -20,11 +20,11 @@ func (t *BinaryTree) Key() int {
 
 func (t *BinaryTree) Children() []Node {
 	l := Node(nil)
-	if (t.left != nil) {
+	if t.left != nil {
 		l = Node(t.left)
 	}
 	r := Node(nil)
-	if (t.right != nil) {
+	if t.right != nil {
 		r = Node(t.right)
 	}
 	return []Node{l, r}

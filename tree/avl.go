@@ -1,8 +1,8 @@
 package tree
 
 type AVL struct {
-	key, h int
-	val interface{}
+	key, h      int
+	val         interface{}
 	left, right *AVL
 }
 
@@ -20,11 +20,11 @@ func (t *AVL) Key() int {
 
 func (t *AVL) Children() []Node {
 	l := Node(nil)
-	if (t.left != nil) {
+	if t.left != nil {
 		l = Node(t.left)
 	}
 	r := Node(nil)
-	if (t.right != nil) {
+	if t.right != nil {
 		r = Node(t.right)
 	}
 	return []Node{l, r}
@@ -54,7 +54,7 @@ func (tr *AVL) Insert(key int, val interface{}) {
 		return
 	}
 
-	path := make([]*AVL, 0, tr.h + 1)
+	path := make([]*AVL, 0, tr.h+1)
 	for tr != nil {
 		path = append(path, tr)
 		if key <= tr.key {
@@ -64,7 +64,7 @@ func (tr *AVL) Insert(key int, val interface{}) {
 		}
 	}
 
-	end := path[len(path) - 1]
+	end := path[len(path)-1]
 	new := &AVL{key: key, h: 0, val: val}
 	if key <= end.key {
 		end.left = new
@@ -77,9 +77,78 @@ func (tr *AVL) Insert(key int, val interface{}) {
 }
 
 func (tr *AVL) Delete(key int) bool {
-	// Delete like normal, pushing ancestors to stack
-	// Rebalance on the stack
-	return false
+	if tr.h == -1 {
+		return false
+	}
+	if key == tr.key {
+		tr.deleteRoot()
+		return true
+	}
+
+	mock := &AVL{}
+	edge := &mock
+	path := make([]*AVL, 0)
+	for {
+		if tr == nil {
+			return false
+		}
+		path = append(path, tr)
+
+		if key == tr.key {
+			break
+		} else if key < tr.key {
+			edge = &tr.left
+			tr = tr.left
+		} else {
+			edge = &tr.right
+			tr = tr.right
+		}
+	}
+
+	middleEdge := &tr.right
+	if *middleEdge == nil {
+		*edge = tr.left
+		return true
+	}
+
+	path = append(path, *middleEdge)
+	for {
+		if (*middleEdge).left == nil {
+			break
+		}
+		middleEdge = &(*middleEdge).left
+		path = append(path, *middleEdge)
+	}
+
+	*edge = *middleEdge
+	*middleEdge = (*middleEdge).right
+	(*edge).left = tr.left
+	if tr.right != *edge {
+		(*edge).right = tr.right
+	}
+
+	rebalance(path)
+
+	return true
+}
+
+func (tr *AVL) deleteRoot() {
+	if tr.right != nil {
+		l := tr.left
+		*tr = *tr.right
+		if l != nil {
+			p := tr
+			for p.left != nil {
+				p = p.left
+			}
+			p.left = l
+		}
+	} else if tr.left != nil {
+		*tr = *tr.left
+	} else {
+		*tr = AVL{h: -1}
+	}
+	rebalance([]*AVL{tr})
 }
 
 func (tr *AVL) NodeCount() int {

@@ -12,9 +12,9 @@ type searchTree interface {
 }
 
 type wrappedTest struct {
-	t *testing.T
+	t      *testing.T
 	prefix string
-	tr Tree
+	tr     Tree
 }
 
 func (t *wrappedTest) Errorf(str string, vals ...interface{}) {
@@ -35,18 +35,22 @@ func testSearchTree(t *wrappedTest, tr searchTree) {
 		tr.Insert(pair[0], pair[1])
 	}
 
-	ok = tr.Delete(7)
-	if !ok {
-		t.Errorf("Expected deletion of 7 to succeed")
-	}
-
-	d, ok = tr.Get(7)
-	if ok {
-		t.Errorf("Expected tr.Get(7) after deletion to fail with ok = false")
+	toDelete := []int{7, 20, 3}
+	deleted := make(map[int]bool)
+	for _, n := range toDelete {
+		ok = tr.Delete(n)
+		if !ok {
+			t.Errorf("Expected deletion of %d to succeed", n)
+		}
+		d, ok = tr.Get(n)
+		if ok {
+			t.Errorf("Expected tr.Get(%d) after deletion to fail with ok = false", n)
+		}
+		deleted[n] = true
 	}
 
 	for _, pair := range pairs {
-		if pair[0] == 7 {
+		if _, ok = deleted[pair[0]]; ok {
 			continue
 		}
 		d, ok = tr.Get(pair[0])

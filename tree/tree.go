@@ -29,6 +29,6 @@ func printNode(b *strings.Builder, node Node, pad string) {
 		if n == Node(nil) {
 			continue
 		}
-		printNode(b, n, pad + "    ")
+		printNode(b, n, pad+"    ")
 	}
 }
