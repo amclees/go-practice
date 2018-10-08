@@ -128,7 +128,9 @@ func createGraph() graph.Graph {
 }
 
 func createBenchmarkGraph(n int) graph.Graph {
-	g := createGraph()
+	nodeMax := translatePoint(point{n, n})
+	mg := graph.NewListGraph(nodeMax, 4)
+	g := graph.Graph(&mg)
 	for i := 1; i <= n; i++ {
 		for j := 1; j <= n; j++ {
 			p := point{i, j}
@@ -152,11 +154,28 @@ func createBenchmarkGraph(n int) graph.Graph {
 }
 
 func translateNode(n int) point {
-	return point{(n & 0xffff0000) >> 16, n & 0x0000ffff}
+	sx := (n & 0xf0f0f0f0) >> 4
+	x := 0
+	for ; sx != 0; sx >>= 4 {
+		x += sx & 0xf
+	}
+
+	sy := n & 0x0f0f0f0f
+	y := 0
+	for ; sy != 0; sy >>= 4 {
+		x += sy & 0xf
+	}
+
+	return point{x, y}
 }
 
 func translatePoint(p point) int {
-	return p.x<<16 + p.y
+	sum := 0
+	b1, b2, b3, b4 := p.x&0xf000, p.x&0x0f00, p.x&0x00f0, p.x&0x000f
+	sum += b1<<16 + b2<<12 + b3<<8 + b4<<4
+	b1, b2, b3, b4 = p.y&0xf000, p.y&0x0f00, p.y&0x00f0, p.y&0x000f
+	sum += b1<<12 + b2<<8 + b3<<4 + b4
+	return sum
 }
 
 func benchmarkSearch(name string, b *testing.B, search func(graph.Graph, int, int) []int, n int) {
