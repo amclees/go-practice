@@ -1,7 +1,6 @@
 package search
 
 import (
-	"math"
 	"testing"
 
 	"github.com/amclees/go-practice/graph"
@@ -40,7 +39,14 @@ func h(g graph.Graph, n1, n2 int) int {
 	p1, p2 := d1.(point), d2.(point)
 	x1, x2 := p1.x, p2.x
 	y1, y2 := p1.y, p2.y
-	return int(math.Phi * math.Sqrt(float64((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))))
+	return abs(x1-x2) + abs(y1-y2)
+}
+
+func abs(k int) int {
+	if k < 0 {
+		return k * -1
+	}
+	return k
 }
 
 func testSearch(name string, t *testing.T, search func(graph.Graph, int, int) []int, testMin bool, gridOnly bool) {
@@ -119,4 +125,77 @@ func createCases() []testCase {
 func createGraph() graph.Graph {
 	g := graph.PointerGraph{}
 	return graph.Graph(&g)
+}
+
+func createBenchmarkGraph(n int) graph.Graph {
+	g := createGraph()
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= n; j++ {
+			p := point{i, j}
+			g.AddNode(translatePoint(p), p)
+		}
+	}
+
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= n; j++ {
+			k := translatePoint(point{i, j})
+			points := []point{{i, j + 1}, {i, j - 1}, {i + 1, j}, {i - 1, j}}
+			for _, p := range points {
+				if p.x > 0 && p.y > 0 && p.x <= n && p.y <= n && (p.x < n/2 || p.y > n/2) {
+					g.AddEdge(k, translatePoint(p), 1)
+				}
+			}
+		}
+	}
+
+	return g
+}
+
+func translateNode(n int) point {
+	return point{(n & 0xffff0000) >> 16, n & 0x0000ffff}
+}
+
+func translatePoint(p point) int {
+	return p.x<<16 + p.y
+}
+
+func benchmarkSearch(name string, b *testing.B, search func(graph.Graph, int, int) []int, n int) {
+	g := createBenchmarkGraph(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = search(g, 1, n)
+	}
+}
+
+func BenchmarkSearchBFS100(b *testing.B) {
+	benchmarkSearch("BFS", b, BFS, 100)
+}
+
+func BenchmarkSearchDFS100(b *testing.B) {
+	benchmarkSearch("DFS", b, DFS, 100)
+}
+
+func BenchmarkSearchDijkstra100(b *testing.B) {
+	benchmarkSearch("Dijkstra", b, Dijkstra, 100)
+}
+
+func BenchmarkSearchAStar100(b *testing.B) {
+	benchmarkSearch("AStar", b, AStar(h), 100)
+}
+
+func BenchmarkSearchBFS1000(b *testing.B) {
+	benchmarkSearch("BFS", b, BFS, 1000)
+}
+
+func BenchmarkSearchDFS1000(b *testing.B) {
+	benchmarkSearch("DFS", b, DFS, 1000)
+}
+
+func BenchmarkSearchDijkstra1000(b *testing.B) {
+	benchmarkSearch("Dijkstra", b, Dijkstra, 1000)
+}
+
+func BenchmarkSearchAStar1000(b *testing.B) {
+	benchmarkSearch("AStar", b, AStar(h), 1000)
 }
